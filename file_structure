@@ -1,0 +1,107 @@
+
+```
+lib/
+├── core/                # Umumiy funksiyalar va yordamchi klasslar
+│   ├── api/             # API bilan ishlash uchun umumiy klasslar
+│   │   ├── api_client.dart    # HTTP so'rovlarini yuborish
+│   │   └── api_endpoints.dart # API manzillari (konstantalar)
+│   ├── constants.dart      # Ilovada ishlatiladigan konstantalar
+│   ├── error/           # Xatoliklar bilan ishlash
+│   │   ├── exceptions.dart    # Maxsus Exception klasslari
+│   │   └── failures.dart     # Xatoliklarni domen qatlamida ifodalash
+│   ├── network/         # Tarmoq ulanishini tekshirish
+│   │   └── network_info.dart
+│   ├── utils/           # Turli yordamchi funksiyalar
+│   │   └── validators.dart    # Ma'lumotlarni tekshirish (masalan, email)
+│   └── localization.dart  # Tarjima (agar kerak bo'lsa)
+├── di/                  # Dependency Injection konteyneri
+│   └── injection_container.dart
+├── features/            # Ilovaning asosiy funksiyalariga bo'lingan modullar
+│   ├── user/            # Foydalanuvchi bilan bog'liq funksiyalar (autentifikatsiya, profil)
+│   │   ├── data/
+│   │   │   ├── datasources/
+│   │   │   │   ├── user_local_datasource.dart  # Shaxsiy ma'lumotlarni lokal saqlash (masalan, Shared Preferences)
+│   │   │   │   └── user_remote_datasource.dart # API bilan ishlash (foydalanuvchi ma'lumotlarini olish/yuborish)
+│   │   │   ├── models/
+│   │   │   │   └── user_model.dart           # User ma'lumotlarini JSON dan obyektga o'tkazish (va aksincha)
+│   │   │   └── repositories/
+│   │   │       └── user_repository_impl.dart # UserRepository interfeysini implementatsiya qilish (ma'lumotlarni olish/saqlash logikasi)
+│   │   ├── domain/
+│   │   │   ├── entities/
+│   │   │   │   └── user_entity.dart          # Foydalanuvchi obyekti (domen qatlamida)
+│   │   │   ├── repositories/
+│   │   │   │   └── user_repository.dart       # Foydalanuvchi ma'lumotlarini olish/saqlash interfeysi (abstrakt)
+│   │   │   └── usecases/
+│   │   │       ├── get_user_usecase.dart      # Foydalanuvchi ma'lumotlarini olish uchun usecase
+│   │   │       ├── login_user_usecase.dart     # Tizimga kirish uchun usecase
+│   │   │       ├── register_user_usecase.dart  # Ro'yxatdan o'tish uchun usecase
+│   │   │       └── logout_user_usecase.dart    # Tizimdan chiqish uchun usecase
+│   │   └── presentation/
+│       │   ├── bloc/
+│       │   │   ├── user_bloc.dart             # Foydalanuvchi bilan bog'liq holatlarni boshqarish
+│       │   │   ├── user_event.dart            # User BLoC uchun eventlar
+│       │   │   └── user_state.dart            # User BLoC uchun holatlar
+│       │   ├── pages/
+│       │   │   ├── login_page.dart          # Tizimga kirish sahifasi
+│       │   │   ├── register_page.dart         # Ro'yxatdan o'tish sahifasi
+│       │   │   └── profile_page.dart         # Foydalanuvchi profili sahifasi
+│       │   └── widgets/
+│       │       ├── login_form.dart           # Tizimga kirish formasi
+│       │       └── profile_info.dart         # Foydalanuvchi ma'lumotlarini ko'rsatish uchun widget
+│   ├── barber/          # Sartaroshlar bilan bog'liq funksiyalar (qidiruv, profil)
+│   │   ├── data/
+│   │   │   ├── datasources/
+│   │   │   │   └── barber_remote_datasource.dart # API bilan ishlash (sartaroshlar ro'yxatini olish, va h.k.)
+│   │   │   ├── models/
+│   │   │   │   └── barber_model.dart          # Barber ma'lumotlarini JSON dan obyektga o'tkazish
+│   │   │   └── repositories/
+│   │   │       └── barber_repository_impl.dart # BarberRepository interfeysini implementatsiya qilish
+│   │   ├── domain/
+│   │   │   ├── entities/
+│   │   │   │   └── barber_entity.dart         # Sartarosh obyekti
+│   │   │   ├── repositories/
+│   │   │   │   └── barber_repository.dart      # Sartarosh ma'lumotlarini olish interfeysi (abstrakt)
+│   │   │   └── usecases/
+│   │   │       ├── get_barbers_usecase.dart   # Sartaroshlar ro'yxatini olish uchun usecase
+│   │   │       └── get_barber_details_usecase.dart # Sartarosh haqida to'liq ma'lumot olish uchun usecase
+│   │   └── presentation/
+│       │   ├── bloc/
+│       │   │   ├── barber_bloc.dart
+│       │   │   ├── barber_event.dart
+│       │   │   └── barber_state.dart
+│       │   ├── pages/
+│       │   │   ├── barber_list_page.dart      # Sartaroshlar ro'yxati sahifasi
+│       │   │   └── barber_details_page.dart   # Sartarosh haqida to'liq ma'lumot sahifasi
+│       │   └── widgets/
+│       │       ├── barber_list_item.dart     # Ro'yxatdagi bitta sartarosh uchun widget
+│       │       └── barber_info.dart         # Sartarosh ma'lumotlarini ko'rsatish uchun widget
+│   ├── booking/         # Bron qilish bilan bog'liq funksiyalar
+│   │   ├── data/
+│   │   │   ├── datasources/
+│   │   │   │   └── booking_remote_datasource.dart # API bilan ishlash (bron qilish, bronlar ro'yxatini olish)
+│   │   │   ├── models/
+│   │   │   │   └── booking_model.dart          # Booking ma'lumotlarini JSON dan obyektga o'tkazish
+│   │   │   └── repositories/
+│   │   │       └── booking_repository_impl.dart # BookingRepository interfeysini implementatsiya qilish
+│   │   ├── domain/
+│   │   │   ├── entities/
+│   │   │   │   └── booking_entity.dart         # Bron obyekti
+│   │   │   ├── repositories/
+│   │   │   │   └── booking_repository.dart      # Bron ma'lumotlarini olish/saqlash interfeysi (abstrakt)
+│   │   │   └── usecases/
+│   │   │       ├── create_booking_usecase.dart # Bron qilish uchun usecase
+│   │   │       └── get_user_bookings_usecase.dart # Foydalanuvchining bronlari ro'yxatini olish uchun usecase
+│   │   └── presentation/
+│       │   ├── bloc/
+│       │   │   ├── booking_bloc.dart
+│       │   │   ├── booking_event.dart
+│       │   │   └── booking_state.dart
+│       │   ├── pages/
+│       │   │   └── booking_page.dart          # Bron qilish sahifasi
+│       │   └── widgets/
+│       │       └── booking_form.dart          # Bron qilish formasi
+│   └── ...              # Boshqa modullar (masalan, payment - to'lov tizimlari bilan ishlash)
+├── main.dart            # Ilovaning kirish nuqtasi
+├── routes.dart           # Ilova navigatsiyasi (sahifalar o'rtasida o'tish)
+└── theme.dart           # Ilova uchun umumiy uslublar (ranglar, shriftlar)
+```
